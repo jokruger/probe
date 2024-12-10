@@ -77,11 +77,15 @@ func PrintReport() {
 	})
 
 	fmt.Println("\nAggregated Execution Time Report:")
-	fmt.Println("--------------------------------------------------------------------------")
-	fmt.Printf("%-20s %10s %15s %15s %10s\n", "Name", "Calls", "Total Time", "Avg Time", "Calls/sec")
-	fmt.Println("--------------------------------------------------------------------------")
+	fmt.Println("------------------------------------------------------------------------------------")
+	fmt.Printf("%-30s %10s %15s %15s %10s\n", "Name", "Calls", "Total Time", "Avg Time", "Calls/sec")
+	fmt.Println("------------------------------------------------------------------------------------")
 	for _, r := range resultsList {
-		fmt.Printf("%-20s %10d %15v %15v %10.2f\n", r.name, r.callCount, r.totalTime, r.avgTime, r.callsPerSec)
+		name := r.name
+		if len(name) > 30 {
+			name = name[:30]
+		}
+		fmt.Printf("%-30s %10d %15v %15v %10.2f\n", name, r.callCount, r.totalTime, r.avgTime, r.callsPerSec)
 	}
-	fmt.Println("--------------------------------------------------------------------------")
+	fmt.Println("------------------------------------------------------------------------------------")
 }
