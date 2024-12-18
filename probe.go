@@ -93,16 +93,19 @@ func PrintReport() {
 		return int(b.totalTime.Milliseconds() - a.totalTime.Milliseconds())
 	})
 
+	hr := "--------------------------------------------------------------------------------------------------------"
 	fmt.Println("\nAggregated Execution Time Report:")
-	fmt.Println("------------------------------------------------------------------------------------")
-	fmt.Printf("%-30s %10s %15s %15s %10s\n", "Name", "Calls", "Total Time", "Avg Time", "Calls/sec")
-	fmt.Println("------------------------------------------------------------------------------------")
+	fmt.Println(hr)
+	fmt.Printf("%-50s %10s %15s %15s %10s\n", "Name", "Calls", "Total Time", "Avg Time", "Calls/sec")
+	fmt.Println(hr)
 	for _, r := range resultsList {
 		name := r.name
-		if len(name) > 30 {
-			name = "..." + name[:27]
+		if len(name) > 50 {
+			i := len(name) - 47
+			j := len(name)
+			name = "..." + name[i:j]
 		}
-		fmt.Printf("%-30s %10d %15v %15v %10.2f\n", name, r.callCount, r.totalTime, r.avgTime, r.callsPerSec)
+		fmt.Printf("%-50s %10d %15v %15v %10.2f\n", name, r.callCount, r.totalTime, r.avgTime, r.callsPerSec)
 	}
-	fmt.Println("------------------------------------------------------------------------------------")
+	fmt.Println(hr)
 }

@@ -29,7 +29,7 @@ func main() {
 	time.Sleep(30 * time.Millisecond)
 	p1.Stop()
 
-	p2 := probe.Start("Block2")
+	p2 := probe.Start("Block2-With-Very-Very-Very-Very-Very-Very-very-Long-Name")
 	time.Sleep(40 * time.Millisecond)
 	p2.Stop()
 
