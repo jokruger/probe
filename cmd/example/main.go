@@ -16,6 +16,11 @@ func Foo2() {
 	time.Sleep(20 * time.Millisecond)
 }
 
+func Foo3() {
+	defer probe.Probe().Stop()
+	time.Sleep(30 * time.Millisecond)
+}
+
 func main() {
 	Foo1()
 	Foo2()
@@ -29,6 +34,9 @@ func main() {
 	p2.Stop()
 
 	Foo2()
+	Foo3()
+	Foo3()
+	Foo3()
 
 	probe.PrintReport()
 }

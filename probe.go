@@ -2,6 +2,7 @@ package probe
 
 import (
 	"fmt"
+	"runtime"
 	"slices"
 	"sync"
 	"time"
@@ -17,16 +18,32 @@ var (
 	results    = make(map[string]ProbeResult)
 )
 
-type Probe struct {
+type ProbeKeeper struct {
 	name  string
 	start time.Time
 }
 
-func Start(name string) Probe {
-	return Probe{name: name, start: time.Now()}
+func Probe() ProbeKeeper {
+	name := "unknown"
+	pc, _, _, ok := runtime.Caller(1)
+	details := runtime.FuncForPC(pc)
+	if ok && details != nil {
+		name = details.Name()
+	}
+	return ProbeKeeper{
+		name:  name,
+		start: time.Now(),
+	}
 }
 
-func (p Probe) Stop() {
+func Start(name string) ProbeKeeper {
+	return ProbeKeeper{
+		name:  name,
+		start: time.Now(),
+	}
+}
+
+func (p ProbeKeeper) Stop() {
 	duration := time.Since(p.start)
 
 	reportLock.Lock()
@@ -83,7 +100,7 @@ func PrintReport() {
 	for _, r := range resultsList {
 		name := r.name
 		if len(name) > 30 {
-			name = name[:30]
+			name = "..." + name[:27]
 		}
 		fmt.Printf("%-30s %10d %15v %15v %10.2f\n", name, r.callCount, r.totalTime, r.avgTime, r.callsPerSec)
 	}
