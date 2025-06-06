@@ -16,14 +16,25 @@ func Foo2() {
 	time.Sleep(20 * time.Millisecond)
 }
 
+func Foo2Units() {
+	defer probe.Start("Foo2Units").WithUnits(10).Stop()
+	time.Sleep(20 * time.Millisecond)
+}
+
 func Foo3() {
 	defer probe.Probe().Stop()
+	time.Sleep(30 * time.Millisecond)
+}
+
+func Foo3Units() {
+	defer probe.Probe().WithUnits(10).Stop()
 	time.Sleep(30 * time.Millisecond)
 }
 
 func main() {
 	Foo1()
 	Foo2()
+	Foo2Units()
 
 	p1 := probe.Start("Block1")
 	time.Sleep(30 * time.Millisecond)
@@ -34,9 +45,13 @@ func main() {
 	p2.Stop()
 
 	Foo2()
+	Foo2Units()
 	Foo3()
+	Foo3Units()
 	Foo3()
+	Foo3Units()
 	Foo3()
+	Foo3Units()
 
 	probe.PrintReport()
 }
